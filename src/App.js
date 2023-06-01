@@ -8,17 +8,20 @@ function App() {
   const carousel = useRef();
   const controls = useAnimation();
 
+  const [leftMove, setLeftMove] = useState(200);
+  const [rightMove, setRightMove] = useState(200);
+
   useEffect(() => {
     console.log(carousel.current.scrollWidth, carousel.current.offsetWidth);
     setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
   }, []);
 
   const handlePrev = () => {
-    controls.start({ x: 0 });
+    controls.start({ x: -leftMove });
   };
 
   const handleNext = () => {
-    controls.start({ x: -width });
+    controls.start({ x: rightMove });
   };
 
   return (
@@ -39,8 +42,16 @@ function App() {
         </motion.div>
       </motion.div>
       <div className="controls">
-        <button onClick={handlePrev}>Start</button>
-        <button onClick={handleNext}>End</button>
+        <button onClick={() => {
+          setLeftMove(leftMove + 200);
+          setRightMove(rightMove - 200);
+          handlePrev();
+        }}>Left</button>
+        <button onClick={() => {
+          setRightMove(rightMove + 200);
+          setLeftMove(leftMove - 200);
+          handleNext();
+        }}>Right</button>
       </div>
     </div>
   );
